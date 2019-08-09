@@ -23,7 +23,7 @@ let tempDiffForCurrResponses;           //the difference in temperature for the 
 // ********************* GLOBAL VARIABLES: APIs ********************* //
 
 const keyWeather = `02c4644c87236c45fb9220e04f2934bb`; //key for weather API
-const urlWeather = `https://api.openweathermap.org/data/2.5/group?units=metric&appid=${keyWeather}&id=524901,703448,2643743,5128638,127026,6455259,727011,323786,3191281,6458923,6356055,1816670,1850147,7839805,112931,360630&units=metric`; // url for Weather API, selects countries by id; selected countries are chosen because available on Unsplash
+const urlWeather = `https://api.openweathermap.org/data/2.5/group?units=metric&appid=${keyWeather}&id=524901,2950159,2643743,5128638,127026,6455259,727011,323786,3191281,6458923,6356055,1816670,1850147,7839805,112931,360630,3469058,1735161,6453366,1040652&units=metric`; // url for Weather API, selects countries by id; selected countries are chosen because available on Unsplash
 
 
 // ********************* DOM LOCATIONS ********************* //
@@ -46,6 +46,7 @@ const generateQuestionsForRound = () => {
             //populate the list of countries for the current round with data from the weather API
             countriesForCurrRound = dataWeather.list; 
             printQuestionScreen ();
+            console.log(countriesForCurrRound);
         });
     });
 };
@@ -94,7 +95,7 @@ const getResponseOpts = () => {
 //Function takes a country and returns a string of formatted HTML representing a country as a response option
 const getCountryAsHtml = (city, photoUrl) => {
     return `
-        <li class="response-opt" style="background-image: url('${photoUrl}'); background-size: cover;">
+        <li class="response-opt" style="background-image: url('${photoUrl}'); background-size: cover; background-position: center">
             <button class="button-opt" id="${city.id}">
                 <div class="text-info">
                     <div class="response-name" id="response-name-${city.id}">${city.name}, ${city.sys.country}</div>
