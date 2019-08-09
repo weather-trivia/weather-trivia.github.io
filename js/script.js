@@ -21,40 +21,31 @@ let tempDiffForCurrResponses;       //the difference in temperature for the two 
 // ********************* GLOBAL VARIABLES: APIs ********************* //
 const keyUnsplash = `9d2643c16b551568584613649732c462489b9c5b3345d97fc36c18eb93099b01` //key for unsplash API 
 const keyWeather = `02c4644c87236c45fb9220e04f2934bb`; //key for weather API
-const urlWeather = `https://api.openweathermap.org/data/2.5/group?units=metric&appid=${keyWeather}&id=524901,703448,2643743,5128638,127026,6455259,727011&units=metric`; // url for Weather API, selects countries by id; selected countries are chosen because available on Unsplash
+const urlWeather = `https://api.openweathermap.org/data/2.5/group?units=metric&appid=${keyWeather}&id=524901,703448,2643743,5128638,127026,6455259,727011,323786,3191281,6458923,6356055,1816670,1850147,7839805,112931,360630&units=metric`; // url for Weather API, selects countries by id; selected countries are chosen because available on Unsplash
 
 
 // ********************* APPLICATION ********************* //
-fetch( urlWeather ).then( responseWeather => {
-    responseWeather.json().then( dataWeather => {
-        //populate the list of countries for the current round with data from the weather API
-        countriesForCurrRound = dataWeather.list; // FIX ME: round must not take all API countries but only a random subset 
-        //function takes two random countries from the countriesForCurrRound array to serve as response options for the current question;
-        getResponseOpts ();
-        //Promise waits for all fetches to complete, then we execute operations on the fetched data
-        Promise.all(responsesForCurrQuestion.map((option) => {
-            //for each respons option, fetch returns an object containing 10 unsplash images that match that option;
-            return fetch( `https://api.unsplash.com/search/photos/?client_id=${keyUnsplash}&query="${option.name} city"&orientation=landscape` ).then( responsePhoto => {
-                    return responsePhoto.json();
-                })
-            //produces an array of the fetched search objects
-            })).then((results) => {
-            //for each of the fetched search options, function picks a random image url and pushes it to a new array of urls.
-            results.forEach((dataPhoto) => {
-                photoUrlsForCurrentRound.push(dataPhoto.results[getRandomElementIndexFromAnArray(dataPhoto.results)].urls.regular);
-            });
+// https://api.unsplash.com/search/photos/?client_id=${keyUnsplash}&query="${option.name} city"&orientation=landscape
+
+const generateQuestionScreen = () => {
+    fetch( urlWeather ).then( responseWeather => {
+        responseWeather.json().then( dataWeather => {
+            //populate the list of countries for the current round with data from the weather API
+            countriesForCurrRound = dataWeather.list; // FIX ME: round must not take all API countries but only a random subset 
+            //function takes two random countries from the countriesForCurrRound array to serve as response options for the current question;
+            getResponseOpts ();
+            console.log(responsesForCurrQuestion);
+            //for each of the current city response options, get a random photo of the city and push the url into a new array;
+            responsesForCurrQuestion.forEach((option) => {
+                photoUrlsForCurrentRound.push(`https://source.unsplash.com/random/600×400/?${option.name}`);
+                });
             //generate top bar with score and question number
             printTopBar (qNum, score);
             //generate options as HTML
             printResponseOpts ();
         });
-
-        // photoUrlsForCurrentRound.push('https://images.pexels.com/photos/1034662/pexels-photo-1034662.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500');
-        // photoUrlsForCurrentRound.push('../img/mumbai.jpg');
-        // printResponseOpts ();
-        
     });
-});
+};
 
 // ********************* HELPER FUNCTIONS ********************* //
 
@@ -95,15 +86,15 @@ const printTopBar = (qNum, score) => {
 
 //Function takes a country and returns a string of formatted HTML representing a country as a response option
 const getCountryAsHtml = (city, photoUrl) => {
-// <img src="${photoUrl}">
+    console.log(city.weather[0].icon);
     return `
         <li class="response-opt" style="background-image: url('${photoUrl}'); background-size: cover;">
             <button class="button-opt" id="${city.id}">
                 <div class="text-info">
                     <div class="response-name" id="response-name-${city.id}">${city.name}, ${city.sys.country}</div>
                     <div class="answer-fdb hidden"> 
-                        <img src="#">
-                        <span class="degrees">${city.main.temp}</span>
+                        <img src="http://openweathermap.org/img/wn/${city.weather[0].icon}.png">
+                        <span class="degrees">${city.main.temp}&#8451</span>
                     </div>
                 </div>
             </button>
@@ -151,5 +142,12 @@ document.getElementById(`response-opts`).addEventListener (`click`, (event) => {
 
 });
 
+//when "start round" button is clicked, the intro screen becomes hidden and the relevant content is generated
 
+document.getElementById(`start-btn-round`).addEventListener (`click`, (event) => {
+    document.getElementById(`intro-screen`).classList.add(`hidden`);  
+    document.getElementById(`question-screen`).classList.remove(`hidden`);
+    generateQuestionScreen (); 
+
+});
 

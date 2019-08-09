@@ -11,16 +11,26 @@
 </head>
 <body>
     <main>
-        <div class="intro screen hidden"> 
+        <!--Intro screen-->
+        <div class="intro-screen" id="intro-screen"> 
             <div class="intro-msg">
-                <h1> Weather Trivia</h1>
-                <h2>Round 1</h2>
+                <div class=title-w-bars>
+                    <svg class="inline-block svg-line-bar">
+                        <line x1="0%" y1="50%"  x2="100%" y2="50%" stroke="white" stroke-width="3"/>
+                    </svg>
+                    <h2 class="mini-title inline-block">Round 1</h2>
+                    <svg class="inline-block svg-line-bar">
+                        <line x1="0%" y1="50%"  x2="100%" y2="50%" stroke="white" stroke-width="3"/>
+                    </svg>
+                </div>
+               
                 <div class="round-question">Which city is currently warmer?</div>
-                <button class="start-app" id="start-app"> START ROUND </button>
+                <button class="start-btn" id="start-btn-round"> START ROUND </button>
             </div>
         </div>
-        
-        <div class="question-screen">
+
+        <!--Question screen-->
+        <div class="question-screen hidden" id="question-screen">
             <div class="top-bar" id="top-bar">
             </div>
 
