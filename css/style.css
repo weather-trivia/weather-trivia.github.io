@@ -14,15 +14,15 @@ h2 {
     text-transform: uppercase;
 }
 
-/* classes: intro*/
-.intro-screen {
+/* classes: intro/score*/
+.intro-screen, .score-screen {
     position: relative;
     text-align: center;
     width: 100vw;
     height: 100vh;
 }
 
-.intro-msg {  
+.intro-msg, .score-msg {  
     position: absolute;
     top: 50%;
     left: 50%;
@@ -42,6 +42,10 @@ h2 {
 .start-btn {
     background: white;
     padding: 1em;
+}
+
+.score-msg {
+    font-size: 1.5em;
 }
 
 /* classes: top bar*/
@@ -70,6 +74,19 @@ h2 {
 
 
 /* classes: responses*/
+.question {
+    position: relative;
+}
+
+.icon {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    margin-right: 3em;
+    transform: translate(-50%, -50%)
+}
+
+
 .response-opts {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -146,4 +163,9 @@ h2 {
     width: 4em;
     height: 1em;
     margin: 0 1em;
+}
+
+.icon {
+    width: 3em;
+    height: 3em;
 }
